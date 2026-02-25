@@ -1,6 +1,11 @@
 package fi.metropolia.jarkkaka.prj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name="customers")
@@ -9,28 +14,43 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="id")
     private Integer id;
-    @Column(name="first_name")
-    private String firstname;
-
-    @Column(name="last_name")
-    private String lastname;
-
-    @Column(name="email")
+    @JsonProperty("first_name")
+    private String firstName;
+    @JsonProperty("last_name")
+    private String lastName;
     private String email;
-
-    @Column(name="phone")
     private String phone;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JsonIgnore
+    private List<Orders> orders;
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    @JsonIgnore
+    private List<CustomerAddress> addresses;
+
+    public void addOrder(Orders order) {
+        orders.add(order);
+        order.setCustomer(this);
+    }
+
+    public void addAddress(CustomerAddress address) {
+        addresses.add(address);
+        address.setCustomer(this);
+    }
 
     public Integer getId() {
         return id;
     }
 
     public String getFirstname() {
-        return firstname;
+        return firstName;
     }
 
     public String getLastname() {
-        return lastname;
+        return lastName;
     }
 
     public String getEmail() {
@@ -45,12 +65,12 @@ public class Customer {
         this.id = id;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setFirstname(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastname(String lastName) {
+        this.lastName = lastName;
     }
 
     public void setEmail(String email) {

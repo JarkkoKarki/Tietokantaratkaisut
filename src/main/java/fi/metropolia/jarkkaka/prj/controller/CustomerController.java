@@ -28,6 +28,7 @@ public class CustomerController {
 
     @PostMapping
     public Customer createCustomer(@RequestBody Customer customer) {
+
         return repository.save(customer);
     }
 
