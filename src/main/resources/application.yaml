@@ -9,4 +9,3 @@ spring:
     name: prj
   datasource:
 
-
