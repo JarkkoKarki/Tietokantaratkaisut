@@ -24,14 +24,14 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     @JsonIgnore
-    private List<Orders> orders;
+    private List<Order> orders;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonManagedReference
     @JsonIgnore
     private List<CustomerAddress> addresses;
 
-    public void addOrder(Orders order) {
+    public void addOrder(Order order) {
         orders.add(order);
         order.setCustomer(this);
     }

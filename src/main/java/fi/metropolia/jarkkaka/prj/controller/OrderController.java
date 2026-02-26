@@ -1,6 +1,6 @@
 package fi.metropolia.jarkkaka.prj.controller;
 
-import fi.metropolia.jarkkaka.prj.entity.Orders;
+import fi.metropolia.jarkkaka.prj.entity.Order;
 import fi.metropolia.jarkkaka.prj.repository.OrdersRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,35 +9,35 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
-public class OrdersController {
+public class OrderController {
     private final OrdersRepository repository;
 
-    public OrdersController(final OrdersRepository repository) {
+    public OrderController(final OrdersRepository repository) {
         this.repository = repository;
     }
 
     @GetMapping
-    public List<Orders> getAllOrders() {return repository.findAll();}
+    public List<Order> getAllOrders() {return repository.findAll();}
 
     @GetMapping("/{id}")
-    public ResponseEntity<Orders> getOrderById(@PathVariable Integer id) {
-        return repository.findById(id).map(orders -> ResponseEntity.ok(orders)).orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Order> getOrderById(@PathVariable Integer id) {
+        return repository.findById(id).map(order -> ResponseEntity.ok(order)).orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public Orders createOrder(@RequestBody Orders order) {
+    public Order createOrder(@RequestBody Order order) {
         return repository.save(order);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Orders> updateOrder(@PathVariable Integer id, @RequestBody Orders updatedOrder) {
+    public ResponseEntity<Order> updateOrder(@PathVariable Integer id, @RequestBody Order updatedOrder) {
         return repository.findById(id)
                 .map(order -> {
                     order.setCustomer(updatedOrder.getCustomer());
                     order.setOrder_date(updatedOrder.getOrder_date());
                     order.setDelivery_date(updatedOrder.getDelivery_date());
                     order.setStatus(updatedOrder.getStatus());
-                    Orders saved = repository.save(order);
+                    Order saved = repository.save(order);
                     return ResponseEntity.ok(saved);
                 })
                 .orElse(ResponseEntity.notFound().build());
