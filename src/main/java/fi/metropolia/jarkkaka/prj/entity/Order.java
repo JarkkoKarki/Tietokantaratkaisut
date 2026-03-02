@@ -19,6 +19,7 @@ public class Order {
     private Timestamp delivery_date;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="shipping_address_id")
+    @JsonBackReference
     private CustomerAddress customeraddress;
     private String status;
 
