@@ -1,11 +1,7 @@
 package fi.metropolia.jarkkaka.prj.controller;
 
 import fi.metropolia.jarkkaka.prj.entity.OrderItem;
-import fi.metropolia.jarkkaka.prj.entity.Order;
-import fi.metropolia.jarkkaka.prj.entity.Product;
-import fi.metropolia.jarkkaka.prj.repository.OrderItemRepository;
-import fi.metropolia.jarkkaka.prj.repository.OrderRepository;
-import fi.metropolia.jarkkaka.prj.repository.ProductRepository;
+import fi.metropolia.jarkkaka.prj.service.OrderItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,70 +11,39 @@ import java.util.List;
 @RequestMapping("/orderitems")
 public class OrderItemController {
 
-    private final OrderItemRepository orderItemRepo;
-    private final OrderRepository orderRepo;
-    private final ProductRepository productRepo;
+    private final OrderItemService service;
 
-    public OrderItemController(OrderItemRepository orderItemRepo,
-                               OrderRepository orderRepo,
-                               ProductRepository productRepo) {
-        this.orderItemRepo = orderItemRepo;
-        this.orderRepo = orderRepo;
-        this.productRepo = productRepo;
+    public OrderItemController(OrderItemService service) {
+        this.service = service;
     }
 
     @GetMapping
-    public List<OrderItem> getAllItems() {
-        return orderItemRepo.findAll();
+    public List<OrderItem> getAll() {
+        return service.getAllOrderItems();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderItem> getItemById(@PathVariable Integer id) {
-        return orderItemRepo.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<OrderItem> getById(@PathVariable Integer id) {
+        OrderItem i = service.getOrderItemById(id);
+        if(i == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(i);
     }
 
     @PostMapping
-    public ResponseEntity<OrderItem> createItem(@RequestBody OrderItem item) {
-        Order order = orderRepo.findById(item.getOrder().getId()).orElse(null);
-        Product product = productRepo.findById(item.getProduct().getId()).orElse(null);
-
-        if (order == null || product == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
-        item.setOrder(order);
-        item.setProduct(product);
-
-        OrderItem saved = orderItemRepo.save(item);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<OrderItem> create(@RequestBody OrderItem i) {
+        return ResponseEntity.ok(service.addOrderItem(i));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderItem> updateItem(@PathVariable Integer id, @RequestBody OrderItem updatedItem) {
-        return orderItemRepo.findById(id)
-                .map(item -> {
-                    Order order = orderRepo.findById(updatedItem.getOrder().getId()).orElse(item.getOrder());
-                    Product product = productRepo.findById(updatedItem.getProduct().getId()).orElse(item.getProduct());
-
-                    item.setOrder(order);
-                    item.setProduct(product);
-                    item.setQuantity(updatedItem.getQuantity());
-                    item.setUnit_price(updatedItem.getUnit_price());
-
-                    OrderItem saved = orderItemRepo.save(item);
-                    return ResponseEntity.ok(saved);
-                })
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<OrderItem> update(@PathVariable Integer id, @RequestBody OrderItem i) {
+        OrderItem updated = service.updateOrderItem(id, i);
+        if(updated == null) return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteItem(@PathVariable Integer id) {
-        if (orderItemRepo.existsById(id)) {
-            orderItemRepo.deleteById(id);
-            return ResponseEntity.noContent().build();
-        }
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        if(service.deleteOrderItem(id)) return ResponseEntity.noContent().build();
         return ResponseEntity.notFound().build();
     }
 }

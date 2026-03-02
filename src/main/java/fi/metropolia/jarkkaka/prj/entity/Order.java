@@ -1,6 +1,6 @@
 package fi.metropolia.jarkkaka.prj.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
@@ -13,15 +13,17 @@ public class Order {
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @JsonBackReference
+    @JsonIgnore
     private Customer customer;
     private Timestamp order_date;
     private Timestamp delivery_date;
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name="shipping_address_id")
-    @JsonBackReference
+    @JsonIgnore
     private CustomerAddress customeraddress;
     private String status;
+
+
 
     public Integer getId() {
         return id;

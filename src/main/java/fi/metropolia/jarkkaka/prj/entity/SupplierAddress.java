@@ -1,5 +1,6 @@
 package fi.metropolia.jarkkaka.prj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -13,6 +14,7 @@ public class SupplierAddress {
     private String city;
     private String country;
     @ManyToOne
+    @JsonIgnore
     private Supplier supplier;
 
     public String getCity() {

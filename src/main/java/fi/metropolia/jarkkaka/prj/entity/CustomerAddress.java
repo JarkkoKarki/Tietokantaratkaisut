@@ -1,6 +1,7 @@
 package fi.metropolia.jarkkaka.prj.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,7 +12,7 @@ public class CustomerAddress {
     private Integer id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @JsonBackReference
+    @JsonIgnore
     private Customer customer;
     private String street_address;
     private String postal_code;

@@ -1,5 +1,6 @@
 package fi.metropolia.jarkkaka.prj.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -14,8 +15,19 @@ public class Supplier {
     private String contact_name;
     private String phone;
     private String email;
+    @ManyToMany(mappedBy = "suppliers")
+    @JsonIgnore
+    private List<Product> products;
     @OneToMany(mappedBy = "supplier")
     List<SupplierAddress> address;
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
+    }
 
     public List<SupplierAddress> getAddress() {
         return address;

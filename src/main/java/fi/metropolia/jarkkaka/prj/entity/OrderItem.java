@@ -1,6 +1,6 @@
 package fi.metropolia.jarkkaka.prj.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -13,10 +13,11 @@ public class OrderItem {
     private Integer id;
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    @JsonBackReference
+    @JsonIgnore
     private Order order;
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
+    @JsonIgnore
     private Product product;
 
     private Integer quantity;
