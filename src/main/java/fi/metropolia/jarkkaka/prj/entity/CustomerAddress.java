@@ -1,6 +1,5 @@
 package fi.metropolia.jarkkaka.prj.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 

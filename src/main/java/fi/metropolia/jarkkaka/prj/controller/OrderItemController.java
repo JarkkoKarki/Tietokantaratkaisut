@@ -1,11 +1,13 @@
 package fi.metropolia.jarkkaka.prj.controller;
 
 import fi.metropolia.jarkkaka.prj.entity.OrderItem;
+import fi.metropolia.jarkkaka.prj.dto.OrderItemDto;
 import fi.metropolia.jarkkaka.prj.service.OrderItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/orderitems")
@@ -18,15 +20,17 @@ public class OrderItemController {
     }
 
     @GetMapping
-    public List<OrderItem> getAll() {
-        return service.getAllOrderItems();
+    public List<OrderItemDto> getAll() {
+        return service.getAllOrderItems().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderItem> getById(@PathVariable Integer id) {
+    public ResponseEntity<OrderItemDto> getById(@PathVariable Integer id) {
         OrderItem i = service.getOrderItemById(id);
         if(i == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(i);
+        return ResponseEntity.ok(toDto(i));
     }
 
     @PostMapping
@@ -45,5 +49,15 @@ public class OrderItemController {
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         if(service.deleteOrderItem(id)) return ResponseEntity.noContent().build();
         return ResponseEntity.notFound().build();
+    }
+
+    private OrderItemDto toDto(OrderItem item) {
+        OrderItemDto dto = new OrderItemDto();
+        dto.setId(item.getId());
+        dto.setQuantity(item.getQuantity());
+        dto.setUnitPrice(item.getUnit_price());
+        dto.setOrderId(item.getOrderId());
+        dto.setProductId(item.getProductId());
+        return dto;
     }
 }
