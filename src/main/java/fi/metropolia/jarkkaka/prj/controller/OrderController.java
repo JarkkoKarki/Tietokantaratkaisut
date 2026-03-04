@@ -1,5 +1,6 @@
 package fi.metropolia.jarkkaka.prj.controller;
 
+import fi.metropolia.jarkkaka.prj.dto.OrderTotalDto;
 import fi.metropolia.jarkkaka.prj.entity.Order;
 import fi.metropolia.jarkkaka.prj.service.OrderService;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,11 @@ public class OrderController {
 
     public OrderController(final OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @GetMapping("/total/{email}")
+    public List<OrderTotalDto> getTotals(@PathVariable String email) {
+        return orderService.getSum(email);
     }
 
     @GetMapping

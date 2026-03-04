@@ -15,6 +15,12 @@ public class ProductController {
 
     public ProductController(ProductService service) { this.service = service; }
 
+    @PatchMapping("/increase-prices")
+    public ResponseEntity<String> increasePrices(@RequestParam double percent) {
+        int updatedRows = service.increaseAllPrices(percent);
+        return ResponseEntity.ok("Updated prices for " + updatedRows + " products.");
+    }
+
     @GetMapping
     public List<Product> getAll() { return service.getAllProducts(); }
 

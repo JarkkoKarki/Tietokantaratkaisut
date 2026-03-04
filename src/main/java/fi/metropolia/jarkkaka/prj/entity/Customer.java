@@ -25,13 +25,9 @@ public class Customer {
     private Contact contact;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @JsonIgnore
     private List<Order> orders;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    @JsonManagedReference
-    @JsonIgnore
     private List<CustomerAddress> addresses;
 
     public void addOrder(Order order) {

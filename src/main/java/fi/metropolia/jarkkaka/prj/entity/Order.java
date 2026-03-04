@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 @Entity
 @Table(name="orders")
@@ -22,8 +23,12 @@ public class Order {
     @JsonIgnore
     private CustomerAddress customeraddress;
     private String status;
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> orderItems;
 
-
+    public List<OrderItem> getOrderItems() {
+        return orderItems;
+    }
 
     public Integer getId() {
         return id;

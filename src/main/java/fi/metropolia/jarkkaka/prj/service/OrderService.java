@@ -1,7 +1,9 @@
 package fi.metropolia.jarkkaka.prj.service;
 
+import fi.metropolia.jarkkaka.prj.dto.OrderTotalDto;
 import fi.metropolia.jarkkaka.prj.entity.Order;
 import fi.metropolia.jarkkaka.prj.repository.OrderRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +16,11 @@ public class OrderService {
 
     public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
+    }
+
+    @Transactional
+    public List<OrderTotalDto> getSum(String email) {
+        return orderRepository.getOrderTotalsByCustomerEmail(email);
     }
 
     public List<Order> getAllOrders() {
