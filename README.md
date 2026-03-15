@@ -624,11 +624,13 @@ Sovellus noudattaa Spring Boot -sovelluksille tyypillistä kerrosarkkitehtuuria:
 
 git clone
 
-2. siirry projektikansioon
+2. luo projekti
+
+3. siirry projektikansioon
 
 cd projekti
 
-3. käynnistä sovellus
+4. käynnistä sovellus
 
 Sovellus käynnistyy osoitteeseen:
 
