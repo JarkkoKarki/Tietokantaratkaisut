@@ -4,7 +4,6 @@
 - [Resurssit](#resurssit)
 - [HTTP-metodit](#http-metodit)
 - [API Endpointit](#api-endpointit)
-- [Response / Request](#response-request)
 - [Status Codes](#status-codes)
 - [Tietokanta toteutus](#tietokanta-toteutus)
 - [Database](#database)
