@@ -447,7 +447,7 @@ Indeksejä käytetään kyselyiden nopeuttamiseen.
 Kyselyitä, joissa haetaan tietoja muuttujien perusteella on optimoitu käyttämällä indeksejä. Suorituskykyä on testattu käyttämällä **mysqlslap**-työkalua. Esimerkiksi asiakkaan nimen perusteella tehtävä haku hyödyntää indeksiä, jolloin kysely suoritetaan nopeammin.
 
 ## Transaktiot
-Seuraavat Transaktiot ovat toteutettu transaktioina, jotta tiedot pysyvät eheänä.
+Transaktioita toteutettu, jotta tiedot pysyvät eheinä tietokannassa.
 
 - **GetSum**
 - **IncreaseAllPrices**
@@ -473,7 +473,7 @@ Tietokantaan lisätty liipaisin, joka tallentaa uusien tilausten yhteydessä:
 Tietokantaan tehtyyn tilausloki tauluun
 ### Tapahtuma
 Tietokantaan lisätty tapahtuma, joka tallentaa tilausten määrän 12 tunnin välein uudetTilaukset nimiseen tauluun.
-### proseduurit
+### Proseduurit
 Tietokantaan lisätty proseduuri UserOrders(), joka hakee käyttäjän id:llä tilaukset.
 
 **Liipaisinta, tapahtumaa ja proseduuria ei ole toteutettu API-tasolla, vaan ne toimivat vain tietokannassa**
@@ -504,6 +504,7 @@ Products taulu on määritelty: **WITH SYSTEM VERSIONING** lauseella, joka mahdo
 ### Tietokanta hyödyntää:
 - Lazy loading
 - Eager loading
+<br>
 Näitä käytetään tilanteen mukaan suorituskyvyn optimoimiseksi.
 
 ## Massaoperaatiot
