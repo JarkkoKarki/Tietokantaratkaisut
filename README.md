@@ -361,7 +361,7 @@ Hakee kontakti tiedot
 ## Views
 ### GET /views/search?first_name={first_name}
 
-#### Respomse
+#### Response
 ```json
 {
   "id": 181269,
@@ -446,8 +446,7 @@ Tietokantaan lisätty proseduuri UserOrders(), joka hakee käyttäjän id:llä t
 Tietokannasta voidaan ottaa varmuuskopioita manuaalisesti määritetyllä komennolla 
 
 ## Temporaaliominaisuudet
-
-### Products taulu on määritelty: **WITH SYSTEM VERSIONING** lauseella, joka mahdollistaa tuotteiden muutosten historian tallentamisen tauluun
+Products taulu on määritelty: **WITH SYSTEM VERSIONING** lauseella, joka mahdollistaa tuotteiden muutosten historian tallentamisen tauluun
 
 **Pelkästään tietokantatasolla**
 
