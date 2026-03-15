@@ -2,7 +2,6 @@ package fi.metropolia.jarkkaka.prj.controller;
 
 import fi.metropolia.jarkkaka.prj.entity.NewOrders;
 import fi.metropolia.jarkkaka.prj.service.NewOrdersService;
-import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

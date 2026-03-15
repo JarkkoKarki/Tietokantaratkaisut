@@ -2,7 +2,6 @@ package fi.metropolia.jarkkaka.prj.controller;
 
 import fi.metropolia.jarkkaka.prj.dto.OrderItemDetailDto;
 import fi.metropolia.jarkkaka.prj.entity.OrderItem;
-import fi.metropolia.jarkkaka.prj.dto.OrderItemDto;
 import fi.metropolia.jarkkaka.prj.service.OrderItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
