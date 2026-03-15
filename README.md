@@ -389,6 +389,97 @@ Hakee kontakti tiedot
 
 
 ---
+# Tietokanta toteutus
+
+## Indeksit
+Indeksejä käytetään kyselyiden nopeuttamiseen.
+### Customers
+- **idx_email**
+- **idx_firstname**
+### Products
+- **idx_stock_quantity**
+
+## Kyselyiden Optimointi
+Kyselyitä, joissa haetaan tietoja muuttujien perusteella on optimoitu käyttämällä indeksejä. Suorituskykyä on testattu käyttämällä **mysqlslap**-työkalua. Esimerkiksi asiakkaan nimen perusteella tehtävä haku hyödyntää indeksiä, jolloin kysely suoritetaan nopeammin.
+
+## Transaktiot
+Seuraavat Transaktiot ovat toteutettu transaktioina, jotta tiedot pysyvät eheänä.
+
+- **GetSum**
+- **IncreaseAllPrices**
+- **AddOrder ja UpdateOrder**
+- **AddOrderItem ja UpdateOrderItem**
+
+Transaktiot varmistavat, että kaikki operaatiot suoritetaan kokonaisuutena tai ne perutaan virheen sattuessa
+
+## Lukot
+Tietokanta käyttää oletuseristystasoa sekä automaattisia lukkoja
+
+## Näkymät
+Tietokantaan toteutettu näkymä **NewOrders** , jonka avulla löydetään asiakkaan uudet tilaukset. Näkymä hakee käyttäjän tiedot ja tilausten tiedot joiden status on "NEW".
+
+Näkymää voidaan käyttää API:n endpointin kautta:
+```/views```
+
+## Aktiivisuus
+### Liipasin
+Tietokantaan lisätty liipaisin, joka tallentaa uusien tilausten yhteydessä:
+- Käyttäjän id:n
+- Aikaleiman
+Tietokantaan tehtyyn tilausloki tauluun
+### Tapahtuma
+Tietokantaan lisätty tapahtuma, joka tallentaa tilausten määrän 12 tunnin välein uudetTilaukset nimiseen tauluun
+### proseduurit
+Tietokantaan lisätty proseduuri UserOrders(), joka hakee käyttäjän id:llä tilaukset
+
+**Liipaisinta, tapahtumaa ja proseduuria ei ole toteutettu API-tasolla, vaan ne toimivat vain tietokannassa**
+
+## Tietosuoja
+### Käyttäjät
+- dp_user:
+  - Kaikki oikeudet projektin tietokantaan
+- p_user:
+  - SELECT, INSERT, UPDATE: customers, orders, orderitems
+  - SELECT: products, productcategories
+ 
+### Varmuuskopiointi
+Tietokannasta voidaan ottaa varmuuskopioita manuaalisesti määritetyllä komennolla 
+
+## Temporaaliominaisuudet
+
+### Products taulu on määritelty: **WITH SYSTEM VERSIONING** lauseella, joka mahdollistaa tuotteiden muutosten historian tallentamisen tauluun
+
+**Pelkästään tietokantatasolla**
+
+## Tietokantasuhteet
+### tietokanta hyödyntää seuraavia relaatiosuhteita:
+- 1:1 (OneToOne)
+- 1:M (OneToMany)
+- M:M (ManyToMany)
+
+## Latausstrategia
+### Tietokanta hyödyntää:
+- Lazy loading
+- Eager loading
+Näitä käytetään tilanteen mukaan suorituskyvyn optimoimiseksi.
+
+## Massaoperaatiot
+Tietokanta hyödyntää massaoperaatioita, joiden avulla voidaan käsitellä useita tietueita kerralla.
+
+### GetOrderTotalByCustomerEmail
+Hakee asiakkaan tilausten kokonaissumman sähköpostiosoitteen perusteella.
+### IncreaseAllPrices
+Korottaa kaikkien tuotteiden hintoja.
+
+### Muuntimet
+#### OrderStatus
+Enum luokka, joka muuntaa tietokannan merkkijonot Java-enumeiksi, joka helpottaa statuksen käsittelyä sovelluksessa
+#### Tapahtuma
+Order_date toteutettu @PrePersist annotaatiolla, joka tallentaa tilausajan automaattisesti
+
+
+
+---
 
 # Database
 
