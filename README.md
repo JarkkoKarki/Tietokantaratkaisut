@@ -238,7 +238,8 @@ Hakee kontakti tiedot.
 ```
 ## OrderItems
 
-### GET /orderitems /orderitems/{id}
+### GET /orderitems 
+### GET /orderitems/{id}
 
 #### Response
 ```json
