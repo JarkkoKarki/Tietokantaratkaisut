@@ -1,6 +1,16 @@
 # REST API – Tietokantaratkaisut
 
-Projekti on Tietokantaratkaisut-kurssin REST-API taustapalvelu.
+## Sisällysluettelo
+- [Resurssit](#resurssit)
+- [HTTP-metodit](#http-metodit)
+- [API Endpointit](#api-endpointit)
+- [Response / Request](#response-request)
+- [Status Codes](#status-codes)
+- [Tietokanta toteutus](#tietokanta-toteutus)
+- [Database](#database)
+- [Arkkitehtuuri](#arkkitehtuuri)
+
+Projekti on Tietokantaratkaisut-kurssilla toteutettu REST API -pohjainen taustapalvelu pienelle tilausjärjestelmälle/verkkokaupalle.
 API mahdollistaa asiakkaiden, tilausten, tuotteiden ja toimittajien hallinnan.
 
 Sovellus on toteutettu käyttäen:
@@ -21,13 +31,13 @@ Projektissa on hyödynnetty useita tietokantakurssilla opittuja ominaisuuksia:
 - temporaalitaulut
 - tietokantakäyttäjät ja oikeudet
 
-# Luokat
+# Resurssit
 
 - **Customers** – Käyttäjät  
 - **Contacts** – Käyttäjien kontaktit  
 - **CustomerAddress** – Käyttäjien osoitteet  
 - **Orders** – Käyttäjien tilaukset  
-- **OrderItems** – Tilauksien tuotteet  
+- **OrderItems** – Tilauksen tuotteet  
 - **Products** – Tuotteet  
 - **Suppliers** – Tavaran toimittajat  
 
@@ -41,6 +51,47 @@ Projektissa on hyödynnetty useita tietokantakurssilla opittuja ominaisuuksia:
 | **DELETE** | Poistaa resurssin |
 
 ---
+# API Endpointit
+| Metodi | Endpoint                                      | Kuvaus                                    |
+| ------ | --------------------------------------------- | ----------------------------------------- |
+| GET    | `/customers`                                  | Hakee kaikki asiakkaat                    |
+| GET    | `/customers/{id}`                             | Hakee asiakkaan ID:n perusteella          |
+| POST   | `/customers`                                  | Luo uuden asiakkaan                       |
+| PUT    | `/customers/{id}`                             | Päivittää asiakkaan tiedot                |
+| DELETE | `/customers/{id}`                             | Poistaa asiakkaan                         |
+| GET    | `/contacts`                                   | Hakee kaikki kontaktit                    |
+| GET    | `/contacts/{id}`                              | Hakee kontaktin ID:n perusteella          |
+| POST   | `/contacts`                                   | Luo uuden kontaktin                       |
+| PUT    | `/contacts/{id}`                              | Päivittää kontaktin                       |
+| DELETE | `/contacts/{id}`                              | Poistaa kontaktin                         |
+| GET    | `/customeraddress`                            | Hakee kaikki osoitteet                    |
+| GET    | `/customeraddress/{id}`                       | Hakee osoitteen ID:n perusteella          |
+| POST   | `/customeraddress`                            | Luo uuden osoitteen                       |
+| PUT    | `/customeraddress/{id}`                       | Päivittää osoitteen                       |
+| GET    | `/orders`                                     | Hakee kaikki tilaukset                    |
+| GET    | `/orders/{id}`                                | Hakee tilauksen ID:n perusteella          |
+| POST   | `/orders`                                     | Luo uuden tilauksen                       |
+| PUT    | `/orders/{id}`                                | Päivittää tilauksen                       |
+| GET    | `/orderitems`                                 | Hakee kaikki tilausrivit                  |
+| GET    | `/orderitems/{id}`                            | Hakee tilausrivin                         |
+| POST   | `/orderitems`                                 | Luo uuden tilausrivin                     |
+| PUT    | `/orderitems/{id}`                            | Päivittää tilausrivin                     |
+| DELETE | `/orderitems/{id}`                            | Poistaa tilausrivin                       |
+| GET    | `/products`                                   | Hakee kaikki tuotteet                     |
+| GET    | `/products/{id}`                              | Hakee tuotteen ID:n perusteella           |
+| POST   | `/products`                                   | Luo uuden tuotteen                        |
+| PUT    | `/products/{id}`                              | Päivittää tuotteen                        |
+| DELETE | `/products/{id}`                              | Poistaa tuotteen                          |
+| GET    | `/suppliers`                                  | Hakee kaikki toimittajat                  |
+| GET    | `/suppliers/{id}`                             | Hakee toimittajan                         |
+| POST   | `/suppliers`                                  | Luo uuden toimittajan                     |
+| PUT    | `/suppliers/{id}`                             | Päivittää toimittajan                     |
+| GET    | `/views/search?first_name={first_name}`       | Hakee näkymästä asiakkaan uudet tilaukset |
+| GET    | `/orders/total/{customer_email}`              | Hakee asiakkaan tilausten kokonaissumman  |
+| PATCH  | `/products/increase-prices?percent={percent}` | Korottaa kaikkien tuotteiden hintoja      |
+
+# Response/Request
+
 
 ## Customers
 
@@ -383,11 +434,8 @@ Pääsy tietokantaan luotuihin näkymiin.
 
 Hakee näkymästä uudet tilaukset etunimen perusteella.
 
-Yhdistää tiedot:
-- asiakkaan tiedot
-- Tilauksen tiedot
-- Tilaukset tuotteet
-- Tuotteet
+Näkymä yhdistää useita tauluja (Customers, Orders, OrderItems ja Products)
+ja palauttaa asiakkaan uudet tilaukset sekä niihin liittyvät tuotteet.
 
 ### GET /views/search?first_name={first_name}
 
@@ -419,7 +467,7 @@ Operaatiot, jotka käsittelevät useita tietueita kerralla.
 }
 ```
 
-### PATCH /products/increase-prices?percent={prosentti}
+### PATCH /products/increase-prices?percent={percent}
 Korottaa kaikkien tuotteiden hintaa annetulla prosentilla.
 
 #### Response
@@ -454,7 +502,7 @@ Indeksejä käytetään kyselyiden nopeuttamiseen.
 Kyselyitä, joissa haetaan tietoja muuttujien perusteella on optimoitu käyttämällä indeksejä. Suorituskykyä on testattu käyttämällä **mysqlslap**-työkalua. Esimerkiksi asiakkaan nimen perusteella tehtävä haku hyödyntää indeksiä, jolloin kysely suoritetaan nopeammin.
 
 ## Transaktiot
-Transaktioita toteutettu, jotta tiedot pysyvät eheinä tietokannassa.
+Seuraavat operaatiot on toteutettu tietokantatransaktioina, jotta tietokannan eheys säilyy virhetilanteissa.
 
 - **GetSum**
 - **IncreaseAllPrices**
@@ -559,5 +607,28 @@ Order_date toteutettu @PrePersist annotaatiolla, joka tallentaa tilausajan autom
   - ManyToMany **products**
   - OneToMany **SupplierAddress**
 
+# Arkkitehtuuri
 
+Sovellus noudattaa Spring Boot -sovelluksille tyypillistä kerrosarkkitehtuuria:
+- entity
+- controller
+- service
+- repository
+- dto
+- converter
 
+# Projektin käynnistys
+
+1. kloonaa projekti
+
+git clone
+
+2. siirry projektikansioon
+
+cd projekti
+
+3. käynnistä sovellus
+
+Sovellus käynnistyy osoitteeseen:
+
+http://localhost:8080
