@@ -44,7 +44,8 @@ Projektissa on hyödynnetty useita tietokantakurssilla opittuja ominaisuuksia:
 
 ## Customers
 
-### GET /customers /customers/{id}
+### GET /customers
+### GET /customers/{id}
 Hakee asiakkaat.
 
 ##### Response
@@ -125,8 +126,8 @@ Hakee kontakti tiedot.
 
 ## CustomerAddress
 
-### GET /customeraddress /customeraddress/{id}
-
+### GET /customeraddress 
+### GET /customeraddress/{id}
 #### Response
 ```json
 {
@@ -165,7 +166,8 @@ Hakee kontakti tiedot.
 ```
 ## Orders
 
-### GET /orders /orders/{id}
+### GET /orders 
+### GET /orders/{id}
 
 #### Response
 ```json
@@ -272,7 +274,8 @@ Hakee kontakti tiedot.
 
 ## Products
 
-### GET /products /products/{id}
+### GET /products 
+### GET /products/{id}
 
 
 #### Response
@@ -313,7 +316,8 @@ Hakee kontakti tiedot.
 
 ## Suppliers
 
-### GET /suppliers /suppliers/{id}
+### GET /suppliers 
+### GET /suppliers/{id}
 
 #### Response
 ```json
