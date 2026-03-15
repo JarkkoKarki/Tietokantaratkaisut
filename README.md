@@ -357,6 +357,25 @@ Hakee kontakti tiedot
   ]  
 }
 ```
+
+## Views
+### GET /views/search?first_name={first_name}
+
+#### Respomse
+```json
+{
+  "id": 181269,
+  "first_name": "Mikko",
+  "last_name": "Carey",
+  "email": "vas@example.com",
+  "name": "Turbo Blade 398",
+  "status": "NEW",
+  "quantity": 2,
+  "unit_price": 534.50,
+  "total": 1069.00
+},
+```
+
 ## Status Codes
 
 | Koodi | Selitys |
