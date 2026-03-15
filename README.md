@@ -1,6 +1,6 @@
 # REST API – Tietokantaratkaisut
 
-Tämä projekti on Tietokantaratkaisut-kurssin REST-API taustapalvelu.
+Projekti on Tietokantaratkaisut-kurssin REST-API taustapalvelu.
 API mahdollistaa asiakkaiden, tilausten, tuotteiden ja toimittajien hallinnan.
 
 Sovellus on toteutettu käyttäen:
