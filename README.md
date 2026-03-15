@@ -232,10 +232,11 @@ Hakee kontakti tiedot
   "quantity": 2,
   "unitPrice": 736.44
 }
-
+```
 ### PUT /orderitems/{id}
 
 #### Request
+```json
 {
   "orderId": 143,
   "productId": 5,
