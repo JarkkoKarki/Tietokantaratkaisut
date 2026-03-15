@@ -21,7 +21,7 @@ Projektissa on hyödynnetty useita tietokantakurssilla opittuja ominaisuuksia:
 - temporaalitaulut
 - tietokantakäyttäjät ja oikeudet
 
-# Luokat / Resurssit
+# Luokat
 
 - **Customers** – Käyttäjät  
 - **Contacts** – Käyttäjien kontaktit  
