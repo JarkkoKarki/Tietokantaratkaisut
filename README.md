@@ -394,3 +394,27 @@ Hakee kontakti tiedot
 
 <img src="src/files/relationalschema.png" alt="schema" width="300"/>
 
+## Suhteet
+
+- **Customers**
+  - OneToOne **Contact**
+  - OneToMany **Orders**
+  - OneToMany **CustomerAddress**
+- **Contacts**
+  - OneToOne **Customers**
+- **CustomerAddress**
+  - ManyToOne **Customers**
+- **Orders**
+  - ManyToOne **Customers**
+  - ManyToOne **CustomerAddress**
+- **OrderItems**
+  - ManyToOne **Orders**
+  - ManyToOne **Products**
+- **Products** – **Tuotteet**
+  - ManyToMany **suppliers**
+- **Suppliers**
+  - ManyToMany **products**
+  - OneToMany **SupplierAddress**
+
+
+
