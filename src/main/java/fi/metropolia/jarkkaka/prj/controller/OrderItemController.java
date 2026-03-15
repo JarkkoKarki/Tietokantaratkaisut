@@ -1,5 +1,6 @@
 package fi.metropolia.jarkkaka.prj.controller;
 
+import fi.metropolia.jarkkaka.prj.dto.OrderItemDetailDto;
 import fi.metropolia.jarkkaka.prj.entity.OrderItem;
 import fi.metropolia.jarkkaka.prj.dto.OrderItemDto;
 import fi.metropolia.jarkkaka.prj.service.OrderItemService;
@@ -20,27 +21,32 @@ public class OrderItemController {
     }
 
     @GetMapping
-    public List<OrderItemDto> getAll() {
+    public List<OrderItemDetailDto> getAll() {
         return service.getAllOrderItems().stream()
                 .map(this::toDto)
                 .collect(Collectors.toList());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<OrderItemDto> getById(@PathVariable Integer id) {
+    public ResponseEntity<OrderItemDetailDto> getById(@PathVariable Integer id) {
         OrderItem i = service.getOrderItemById(id);
         if(i == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(toDto(i));
     }
 
     @PostMapping
-    public ResponseEntity<OrderItem> create(@RequestBody OrderItem i) {
-        return ResponseEntity.ok(service.addOrderItem(i));
+    public ResponseEntity<OrderItemDetailDto> create(@RequestBody OrderItemDetailDto dto) {
+        try {
+            OrderItem item = service.addOrderItem(dto);
+            return ResponseEntity.ok(toDto(item));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderItem> update(@PathVariable Integer id, @RequestBody OrderItem i) {
-        OrderItem updated = service.updateOrderItem(id, i);
+    public ResponseEntity<OrderItem> update(@PathVariable Integer id, @RequestBody OrderItemDetailDto dto) {
+        OrderItem updated = service.updateOrderItem(id, dto);
         if(updated == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(updated);
     }
@@ -51,13 +57,14 @@ public class OrderItemController {
         return ResponseEntity.notFound().build();
     }
 
-    private OrderItemDto toDto(OrderItem item) {
-        OrderItemDto dto = new OrderItemDto();
+    private OrderItemDetailDto toDto(OrderItem item) {
+        OrderItemDetailDto dto = new OrderItemDetailDto();
         dto.setId(item.getId());
         dto.setQuantity(item.getQuantity());
         dto.setUnitPrice(item.getUnit_price());
-        dto.setOrderId(item.getOrderId());
-        dto.setProductId(item.getProductId());
+        dto.setOrderId(item.getOrder() != null ? item.getOrder().getId() : null);
+        dto.setProductId(item.getProduct() != null ? item.getProduct().getId() : null);
+
         return dto;
     }
 }

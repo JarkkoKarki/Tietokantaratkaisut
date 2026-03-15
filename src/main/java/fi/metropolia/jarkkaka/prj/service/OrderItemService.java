@@ -1,7 +1,14 @@
 package fi.metropolia.jarkkaka.prj.service;
 
+import fi.metropolia.jarkkaka.prj.dto.OrderItemDetailDto;
+import fi.metropolia.jarkkaka.prj.dto.OrderItemDto;
+import fi.metropolia.jarkkaka.prj.entity.Order;
 import fi.metropolia.jarkkaka.prj.entity.OrderItem;
+import fi.metropolia.jarkkaka.prj.entity.Product;
 import fi.metropolia.jarkkaka.prj.repository.OrderItemRepository;
+import fi.metropolia.jarkkaka.prj.repository.OrderRepository;
+import fi.metropolia.jarkkaka.prj.repository.ProductRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +18,15 @@ import java.util.Optional;
 public class OrderItemService {
 
     private final OrderItemRepository orderItemRepository;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
 
-    public OrderItemService(OrderItemRepository orderItemRepository) {
+    public OrderItemService(OrderItemRepository orderItemRepository,
+                            OrderRepository orderRepository,
+                            ProductRepository productRepository) {
         this.orderItemRepository = orderItemRepository;
+        this.orderRepository = orderRepository;
+        this.productRepository = productRepository;
     }
 
     public List<OrderItem> getAllOrderItems() {
@@ -25,17 +38,38 @@ public class OrderItemService {
         return opt.orElse(null);
     }
 
-    public OrderItem addOrderItem(OrderItem item) {
+    @Transactional
+    public OrderItem addOrderItem(OrderItemDetailDto dto) {
+        OrderItem item = new OrderItem();
+
+        Order order = orderRepository.findById(dto.getOrderId())
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+        Product product = productRepository.findById(dto.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        item.setOrder(order);
+        item.setProduct(product);
+        item.setQuantity(dto.getQuantity());
+        item.setUnit_price(dto.getUnitPrice() != null ? dto.getUnitPrice() : product.getPrice());
+
         return orderItemRepository.save(item);
     }
 
-    public OrderItem updateOrderItem(Integer id, OrderItem updatedItem) {
+    @Transactional
+    public OrderItem updateOrderItem(Integer id, OrderItemDetailDto dto) {
         return orderItemRepository.findById(id)
                 .map(item -> {
-                    item.setOrder(updatedItem.getOrder());
-                    item.setProduct(updatedItem.getProduct());
-                    item.setQuantity(updatedItem.getQuantity());
-                    item.setUnit_price(updatedItem.getUnit_price());
+                    Order order = orderRepository.findById(dto.getOrderId())
+                            .orElseThrow(() -> new RuntimeException("Order not found"));
+
+                    Product product = productRepository.findById(dto.getProductId())
+                            .orElseThrow(() -> new RuntimeException("Product not found"));
+
+                    item.setOrder(order);
+                    item.setProduct(product);
+                    item.setQuantity(dto.getQuantity());
+                    item.setUnit_price(dto.getUnitPrice());
+
                     return orderItemRepository.save(item);
                 })
                 .orElse(null);

@@ -1,7 +1,8 @@
 package fi.metropolia.jarkkaka.prj.controller;
 
+import fi.metropolia.jarkkaka.prj.dto.OrderDto;
 import fi.metropolia.jarkkaka.prj.dto.OrderTotalDto;
-import fi.metropolia.jarkkaka.prj.entity.Order;
+import fi.metropolia.jarkkaka.prj.entity.*;
 import fi.metropolia.jarkkaka.prj.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +15,8 @@ public class OrderController {
 
     private final OrderService orderService;
 
-    public OrderController(final OrderService orderService) {
-        this.orderService = orderService;
+    public OrderController(OrderService order) {
+        this.orderService = order;
     }
 
     @GetMapping("/total/{email}")
@@ -36,13 +37,17 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
-        Order saved = orderService.addOrder(order);
-        return ResponseEntity.ok(saved);
+    public ResponseEntity<Order> createOrder(@RequestBody OrderDto orderDto) {
+        try {
+            Order savedOrder = orderService.addOrder(orderDto);
+            return ResponseEntity.ok(savedOrder);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Integer id, @RequestBody Order updatedOrder) {
+    public ResponseEntity<Order> updateOrder(@PathVariable Integer id, @RequestBody OrderDto updatedOrder) {
         Order updated = orderService.updateOrder(id, updatedOrder);
         if (updated == null) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(updated);

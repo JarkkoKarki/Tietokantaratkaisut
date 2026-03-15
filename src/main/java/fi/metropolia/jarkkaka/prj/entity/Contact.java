@@ -13,7 +13,7 @@ public class Contact {
     @Column(name = "reference", columnDefinition = "char")
     private String reference;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", unique = true)
     private Customer customer;
 
