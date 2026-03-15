@@ -89,7 +89,9 @@ Poistaa asiakkaan.
 
 ## Contacts
 
-### GET /contacts /contacts/{id}
+### GET /contacts 
+### GET /contacts/{id}
+
 Hakee kontakti tiedot.
 
 #### Response
