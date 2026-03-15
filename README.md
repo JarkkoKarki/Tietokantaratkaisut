@@ -1,12 +1,25 @@
 # REST API – Tietokantaratkaisut
 
 Tämä projekti on Tietokantaratkaisut-kurssin REST-API taustapalvelu.
+API mahdollistaa asiakkaiden, tilausten, tuotteiden ja toimittajien hallinnan.
 
 Sovellus on toteutettu käyttäen:
 
 - Spring Boot
 - Spring Web
 - Spring Data JPA
+
+Projektissa on hyödynnetty useita tietokantakurssilla opittuja ominaisuuksia:
+
+- CRUD REST API -rajapinnat
+- tietokantaindeksit
+- näkymät (Views)
+- transaktiot
+- liipaisimet (Triggers)
+- tapahtumat (Events)
+- proseduurit
+- temporaalitaulut
+- tietokantakäyttäjät ja oikeudet
 
 # Luokat / Resurssit
 
@@ -32,7 +45,7 @@ Sovellus on toteutettu käyttäen:
 ## Customers
 
 ### GET /customers /customers/{id}
-Hakee asiakkaat
+Hakee asiakkaat.
 
 ##### Response
 ```json
@@ -45,7 +58,7 @@ Hakee asiakkaat
 }
 ```
 ### PUT /customers/{id}
-päivittää asiakkaan tiedot
+päivittää asiakkaan tiedot.
 
 #### Request
 ```json
@@ -71,12 +84,12 @@ päivittää asiakkaan tiedot
 ```
 
 ### DELETE /customers/{id}
-Poistaa asiakkaan
+Poistaa asiakkaan.
 
 ## Contacts
 
 ### GET /contacts /contacts/{id}
-Hakee kontakti tiedot
+Hakee kontakti tiedot.
 
 #### Response
 ```json
@@ -359,6 +372,16 @@ Hakee kontakti tiedot
 ```
 
 ## Views
+Pääsy tietokantaan luotuihin näkymiin.
+
+Hakee näkymästä uudet tilaukset etunimen perusteella.
+
+Yhdistää tiedot:
+- asiakkaan tiedot
+- Tilauksen tiedot
+- Tilaukset tuotteet
+- Tuotteet
+
 ### GET /views/search?first_name={first_name}
 
 #### Response
@@ -373,7 +396,28 @@ Hakee kontakti tiedot
   "quantity": 2,
   "unit_price": 534.50,
   "total": 1069.00
-},
+}
+```
+
+## Massaoperaatiot
+Operaatiot, jotka käsittelevät useita tietueita kerralla.
+
+### GET /orders/total/{customer_email}
+
+#### Response
+```json
+{
+  "orderId": 58662,
+  "total": 13208.2
+}
+```
+
+### PATCH /products/increase-prices?percent={prosentti}
+Korottaa kaikkien tuotteiden hintaa annetulla prosentilla.
+
+#### Response
+```json
+Updated prices for 1001 products.
 ```
 
 ## Status Codes
@@ -410,10 +454,10 @@ Seuraavat Transaktiot ovat toteutettu transaktioina, jotta tiedot pysyvät eheä
 - **AddOrder ja UpdateOrder**
 - **AddOrderItem ja UpdateOrderItem**
 
-Transaktiot varmistavat, että kaikki operaatiot suoritetaan kokonaisuutena tai ne perutaan virheen sattuessa
+Transaktiot varmistavat, että kaikki operaatiot suoritetaan kokonaisuutena tai ne perutaan virheen sattuessa.
 
 ## Lukot
-Tietokanta käyttää oletuseristystasoa sekä automaattisia lukkoja
+Tietokanta käyttää oletuseristystasoa sekä automaattisia lukkoja.
 
 ## Näkymät
 Tietokantaan toteutettu näkymä **NewOrders** , jonka avulla löydetään asiakkaan uudet tilaukset. Näkymä hakee käyttäjän tiedot ja tilausten tiedot joiden status on "NEW".
@@ -428,9 +472,9 @@ Tietokantaan lisätty liipaisin, joka tallentaa uusien tilausten yhteydessä:
 - Aikaleiman
 Tietokantaan tehtyyn tilausloki tauluun
 ### Tapahtuma
-Tietokantaan lisätty tapahtuma, joka tallentaa tilausten määrän 12 tunnin välein uudetTilaukset nimiseen tauluun
+Tietokantaan lisätty tapahtuma, joka tallentaa tilausten määrän 12 tunnin välein uudetTilaukset nimiseen tauluun.
 ### proseduurit
-Tietokantaan lisätty proseduuri UserOrders(), joka hakee käyttäjän id:llä tilaukset
+Tietokantaan lisätty proseduuri UserOrders(), joka hakee käyttäjän id:llä tilaukset.
 
 **Liipaisinta, tapahtumaa ja proseduuria ei ole toteutettu API-tasolla, vaan ne toimivat vain tietokannassa**
 
@@ -443,10 +487,10 @@ Tietokantaan lisätty proseduuri UserOrders(), joka hakee käyttäjän id:llä t
   - SELECT: products, productcategories
  
 ### Varmuuskopiointi
-Tietokannasta voidaan ottaa varmuuskopioita manuaalisesti määritetyllä komennolla 
+Tietokannasta voidaan ottaa varmuuskopioita manuaalisesti määritetyllä komennolla.
 
 ## Temporaaliominaisuudet
-Products taulu on määritelty: **WITH SYSTEM VERSIONING** lauseella, joka mahdollistaa tuotteiden muutosten historian tallentamisen tauluun
+Products taulu on määritelty: **WITH SYSTEM VERSIONING** lauseella, joka mahdollistaa tuotteiden muutosten historian tallentamisen tauluun.
 
 **Pelkästään tietokantatasolla**
 
@@ -472,9 +516,9 @@ Korottaa kaikkien tuotteiden hintoja.
 
 ### Muuntimet
 #### OrderStatus
-Enum luokka, joka muuntaa tietokannan merkkijonot Java-enumeiksi, joka helpottaa statuksen käsittelyä sovelluksessa
+Enum luokka, joka muuntaa tietokannan merkkijonot Java-enumeiksi, joka helpottaa statuksen käsittelyä sovelluksessa.
 #### Tapahtuma
-Order_date toteutettu @PrePersist annotaatiolla, joka tallentaa tilausajan automaattisesti
+Order_date toteutettu @PrePersist annotaatiolla, joka tallentaa tilausajan automaattisesti.
 
 
 
