@@ -373,5 +373,5 @@ Hakee kontakti tiedot
 
 # Database
 
-<img src="src/files/relational schema.png", alt="schema", width="300"/>
+<img src="src/files/relationalschema.png", alt="schema", width="300"/>
 
