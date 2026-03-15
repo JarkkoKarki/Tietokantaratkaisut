@@ -10,6 +10,8 @@
 - [Database](#database)
 - [Arkkitehtuuri](#arkkitehtuuri)
 
+---
+
 Projekti on Tietokantaratkaisut-kurssilla toteutettu REST API -pohjainen taustapalvelu pienelle tilausjärjestelmälle/verkkokaupalle.
 API mahdollistaa asiakkaiden, tilausten, tuotteiden ja toimittajien hallinnan.
 
