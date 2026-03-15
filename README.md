@@ -27,16 +27,6 @@ Sovellus on toteutettu käyttäen:
 | **POST** | Luo uuden resurssin |
 | **DELETE** | Poistaa resurssin |
 
-# HTTP-metodit
-### GET
-Hakee resurssit
-### PUT
-Päivittää resurssin tiedot
-### POST
-Luo uuden resurssin
-### DELETE
-Poistaa resurssin
-
 ---
 
 ## Customers
