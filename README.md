@@ -515,7 +515,8 @@ Hakee asiakkaan tilausten kokonaissumman sähköpostiosoitteen perusteella.
 ### IncreaseAllPrices
 Korottaa kaikkien tuotteiden hintoja.
 
-### Muuntimet
+### Muuntimet ja tapahtumat
+
 #### OrderStatus
 Enum luokka, joka muuntaa tietokannan merkkijonot Java-enumeiksi, joka helpottaa statuksen käsittelyä sovelluksessa.
 #### Tapahtuma
