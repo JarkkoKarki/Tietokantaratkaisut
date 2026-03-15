@@ -369,5 +369,9 @@ Hakee kontakti tiedot
 | 500 | Internal Server Error – Palvelinvirhe |
 
 
+---
 
+# Database
+
+<img src="src/files/relational schema.png", alt="schema", width="300"/>
 
